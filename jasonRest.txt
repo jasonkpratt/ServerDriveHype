@@ -1,0 +1,120 @@
+GET ALBUM INFO REST CALL
+	FB.api('/{album-id}',function(response){
+		//send response to server for processing
+		//getAlbumInfo.php is the rest call that will process
+				$.post("/rest/rest.php/getAlbumInfo.php",
+				{response:response},
+				function(data){
+				
+					console.log(data);
+					//RESULT IS THE JSON RESPONSE
+					//EASIER TO DEAL WITH. 
+					var result = $.parseJSON(data);
+					//call attributes with a period
+					//result.id, result.name etc
+					
+					//I ALSO GAVE YOU AN ARRAY;
+					//HEAVIER TO CALL ATTRIBUTES, BUT IN CASE YOU
+					//DIDNT WANT TO DEAL WITH A JSON OBJECT
+					
+					var resultingArray = [];
+						/*$.each(result, function(k, v) {
+						var newObj={k:v};
+						console.log(k+" : "+ v);
+						resultingArray.push({k:v});
+						});*/
+					for(var i in  result){
+						resultingArray.push({i: result[i]});
+						}
+					console.log(resultingArray);
+				//DO WHATEVER ELSE YOU WANT TO DO HERE.
+					});
+			});
+			
+			
+GET ALL PHOTOS OF AN ALBUM
+FB.api('/1317435142747/photos',function(response){
+				$.post("/rest/rest.php/getAlbumPhotos",
+				{response:response},
+				function(data){
+					//console.log(data);
+					var result = $.parseJSON(data);
+					console.log(result);
+					//I left the response as JSON because it was just easier to access for JS and PHP
+					//results is the array of photo objects in json format
+					//results.data[0] is the first picture in the album
+					//results.data[i].{property-name-from-facebook-api} to retrieve information
+                              });
+});
+
+GET ALL USER ALBUMS
+FB.api('/{user-id}/albums?fields=id,name,count,privacy,created_time,description',function(response){
+				$.post("/rest/rest.php/getUserAlbums",
+				{response:response},
+				function(data){
+					//console.log(data);
+					var result = $.parseJSON(data);
+					console.log(result);
+					//I left the response as JSON because it was just easier to access for JS and PHP
+					//results is the array of album objects in json format
+					//results.data[0] is the first picture in the album
+					//results.data[i].{property-name-from-facebook-api} to retrieve information
+                               });
+});
+
+CREATING AN ALBUM
+FB.api("/me/albums",
+				"POST",
+			{
+			"name": "{name of album}",
+			"message": "{description}",
+			//I set the privacy as private right now
+			"privacy" : "{'value':'SELF'}"	
+			},
+				function(response){
+				if(response && !response.error){
+				$.post("/rest/rest.php/createAlbum",
+				{response:response},
+				function(data){
+					console.log(data);
+					//data contains the response for the REST CALL
+					//in this case it will return an id to you of the new album
+				});
+				}
+				else{
+				console.log("ERROR");
+				}
+				
+			});
+			
+			
+			
+			
+ADD A PHOTO TO AN ALBUM
+FB.api("/{album-id}/photos",
+				"POST",
+			{
+			"message": "{description}",
+			"url": "{src-url}"
+			},
+				function(response){
+				if(!response || response.error){
+				console.log("error");
+				
+				}
+				else{
+				
+				$.post("/rest/rest.php/addPhoto",
+				{response:response},
+				function(data){
+					console.log(data);
+					//result is the JSON with the response
+					//the response has two properties, id and post_id
+					//access through result.id and result.post_id
+					var result = $.parseJSON(data);
+					//result.id contains the response id if the photo posted correctly
+				});
+				}
+				
+			});			
+

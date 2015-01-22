@@ -1,0 +1,7 @@
+RewriteEngine on
+
+
+RewriteBase /home/content/c/j/c/cjcornell3/html/drivehype/rest
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^(.*)$ rest.php [QSA,L]

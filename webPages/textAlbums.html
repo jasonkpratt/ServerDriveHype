@@ -1,0 +1,567 @@
+<!DOCTYPE html><html>
+
+<head>
+ <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<link rel="stylesheet" href="css/bootstrap-image-gallery.css">
+
+<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="css/local.css" />
+ <link href="css/simple-sidebar.css" rel="stylesheet">
+
+ <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+ <script type="text/javascript" src="js/bootstrap.min.js"></script>   
+
+<title>DriveHype Album Gallery</title>
+
+
+</head>
+<style type="text/css">
+	
+div.hidden{
+    
+    visibility: visible;
+    display:none;
+    
+}
+    
+
+
+	.thumbnails img {
+		width: 100px;
+		height: 80px;
+		border: 4px solid #555;
+		padding: 1px;
+		margin: 0 10px 10px 0;
+		display:inline-block;
+    	
+	}
+
+	.thumbnails img:hover {
+		border: 4px solid #00ccff;
+		cursor:pointer;
+	}
+ 
+	.preview img {
+		border: 4px solid #444;
+		padding: 1px;
+		margin-top:20px;
+		margin-bottom: 20px;
+		height: 200px;
+	}
+
+</style>
+
+<body>
+
+
+
+
+ <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            
+            <div class="container">
+                
+               <a class="navbar-brand" href="#">DriveHype</a> 
+            
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+           
+            
+            <div  class="collapse navbar-collapse navbar-ex1-collapse">
+                
+                <ul class="nav navbar-nav navbar-left ">
+     
+                    <a id="launchAlbum"  class="btn btn-md btn-primary " href="#">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        Edit Text Album </a>
+                    <a href="#" class="btn btn-md btn-success" data-toggle="modal" data-target="#basicModal"><i class="fa fa-table">                </i > Create Text Album</br></a>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right ">
+                    <li class="dropdown messages-dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">2</span> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header">2 New Messages</li>
+                            <li class="message-preview">
+                                <a href="#">
+                                    <span class="avatar"><i class="fa fa-bell"></i></span>
+                                    <span class="message">Security alert</span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li class="message-preview">
+                                <a href="#">
+                                    <span class="avatar"><i class="fa fa-bell"></i></span>
+                                    <span class="message">Security alert</span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="#">Go to Inbox <span class="badge">2</span></a></li>
+                        </ul>
+                    </li>
+                     <li class="dropdown user-dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i id="userName" class="fa fa-user"></i> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                            <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+ 
+	
+
+ 	
+    <div class="container">
+    
+        <div class="row">
+            
+            <div class="col-xs-3">
+               
+                <ul class="nav navbar-nav side-nav">
+                	
+                    <li><a href="#">Album Name: </br><i id='albumName' class="glyphicon glyphicon-record"></i> </a></li>
+                    <li><a href="#">Number of Text: </br><i id='picNum' class="glyphicon glyphicon-camera"></i> </a></li>
+                    <li><a href="#">Creation Date: </br><i id='created' class="glyphicon glyphicon-calendar"></i> </a></li>
+                    <li><a href="#">Privacy Setting: </br><i id='privacy' class="fa fa-unlock-alt"></i> </a></li> 
+                    <li><a href="#">Comment: </br><i id='comment' class="glyphicon glyphicon-comment"></i> </a></li>   
+                    <div class="preview img-responsive" align="bottom">
+						<img ondrop="dropIt(event);" ondragover="event.preventDefault();" name="preview" src=img/logo.png alt=""                          width=200/>
+						
+					</div>
+                      
+                </ul>
+                
+                
+            </div>
+
+            <div class="col-xs-9" >
+                    <h1>Text Gallery </h1>
+                
+                        <blockquote>
+                            <p>The text album gallery allows the user to edit albums, view album slide show or create new albums.</p>
+                        </blockquote>
+            
+                    <div id="firstPhoto" class="thumbnails img-responsive hidden"></div>
+
+	               <div id="albumPhotos" margin-top:50px; class="thumbnails img-responsive hidden">
+                        <div class="row">
+                            <button type="button" class="btn btn-success " onclick="backAlbum()">
+                                <i class="glyphicon glyphicon-arrow-left"></i>
+                                <span>Back to albums</span>
+                                </button>
+                            <button type="button" class="btn btn-primary start" onclick="finishedAlbum()">
+                                <i class="glyphicon glyphicon-saved"></i>
+                                <span>Complete Album</span>
+                            </button>
+                        </div>
+                       <br>
+            
+                    </div> 
+
+                </div>
+            </div>
+
+   <footer>
+       
+            <div class="row">
+                
+                <div class="col-xs-9 pull-right">
+                    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+                    </fb:login-button>
+
+                    <div id="status">
+                    </div>
+                    <p>Copyright &copy; DriveHype 2014</p>
+                </div>
+            </div>
+        </footer>
+    
+    </div>
+    
+    
+ 
+
+
+    
+
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" data-backdrop="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-target=".bs-example-modal-sm" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
+            <h4 class="modal-title" id="myModalLabel">Album Creation</h4>
+            </div>
+            <div class="modal-body">
+                <h3>Please enter album name</h3>
+                <input id="albumNameInput" type="text" class = "span2"></input>
+                <h3>Please enter comment</h3>
+                <input id="commentInput" type="text" class = "span2"></input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="clearTextbox()" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+   data-target="#addPhotoModal" data-dismiss="modal" onclick="makeAlbum()">Save changes</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addPhotoModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" data-backdrop="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-target=".bs-example-modal-sm" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
+            <h4 class="modal-title" id="myModalLabel">Album Creation</h4>
+            </div>
+            <div class="modal-body">
+                <h3>To add an image, click on an album to view images.</h3>
+                
+                <h3>Drag and drop text images onto album "+" icon.</h3>
+                <h3>Add as many images as you like.</h3>
+                <h3>Press 'Complete album' when finished adding photos</h3>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="clearTextbox()" data-dismiss="modal">Close</button>
+                
+        </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+
+<script>
+    
+    
+function backAlbum(){
+    document.getElementById('albumPhotos').style.display='none'; 
+    document.getElementById('firstPhoto').style.display='inline'; 
+}
+    
+
+    
+
+function dropIt(theEvent) {
+   
+var theData = theEvent.dataTransfer.getData("Text");
+console.log("the data "+theData);
+if(theData!=''){
+console.log(document.getElementById("privacy" ).innerHTML);
+preview.src=theData;
+    FB.api('/'+document.getElementById("privacy" ).innerHTML+'/photos', 'post', {
+        message:'photo description',
+        url:theData        
+    }, function(response){
+        if (!response || response.error) {
+            alert('Error occured');
+        } else {
+            alert('Posted the picture to album!');
+            var newCount=document.getElementById("picNum" ).innerHTML;
+            
+            console.log(newCount);
+            newCount++;
+            console.log(newCount);
+        	document.getElementById("picNum" ).innerHTML=newCount;
+        }
+        
+        preview.src="img/addPic.png"; 
+    });
+//instruct the browser to allow the drop
+theEvent.preventDefault();
+}
+  
+     
+
+}
+
+ 
+ function callAlert(callback) {
+     alert("You can't add an album. Please click on an album and drag individual pictures.");
+     callback="hello";
+ }
+    
+    
+function clearTextbox(){
+  console.log("clear tetxbox");
+ 
+ document.getElementById('albumNameInput').value="";
+ document.getElementById('commentInput').value
+ }
+ 
+ 
+    
+
+    
+function makeAlbum(){
+ /* make the API call */
+ console.log(document.getElementById('albumNameInput').value);
+FB.api(
+    "/me/albums",
+    "POST",
+    {
+        "name": document.getElementById('albumNameInput').value,
+        "message": "textAlbum"
+        
+    }, 
+    function (response) {
+      if (response && !response.error) {
+        /* handle the result */
+        clearTextbox();
+        console.log(response.id);
+      	addPhotos(response.id);
+      }
+    }
+);
+
+ }
+ 
+    
+     
+    
+    function addPhotos(id){
+     preview.src="img/addPic.png"; 
+    	console.log("adding photo"+ id);
+    	addPhoto=true;
+    	FB.api('/'+id+'?fields=id,name,count,privacy,created_time,description', function(response) {
+    	console.log(response);
+    	document.getElementById('albumName').innerHTML="  "+response.name;
+   		document.getElementById("picNum" ).innerHTML="  "+response.count;
+   		document.getElementById("created" ).innerHTML="  "+((response.created_time).split("T",1));
+   		document.getElementById("privacy" ).innerHTML=id;
+   		document.getElementById("comment" ).innerHTML="  "+response.description;
+   		console.log("descrip"+response.description);
+   		response.description(response);
+     	}
+     	);
+     	document.getElementById("launchAlbum" ).href='javascript:finishedAlbum()';
+     	document.getElementById("launchAlbum" ).innerHTML="Complete Album";
+     }   
+
+         
+    
+          function myClick(albumID){
+          if(!addPhoto){
+          document.cookie="albumID="+albumID;
+          window.location.href = 'text.html';
+          }
+            else
+   		   { 
+            document.getElementById('albumPhotos').style.display='inline'; 
+            document.getElementById('firstPhoto').style.display='none';  
+            FB.api('/' + albumID+ '/photos', function(photos) {
+      		if (photos && photos.data && photos.data.length) {
+         	  for (var j = 0; j < photos.data.length; j++) {
+         	      var linksContainer = $('#albumPhotos');
+          	     var photo = photos.data[j]; 
+          	     var image = document.createElement('img');
+          	     image.src = photo.source;
+                  
+                  $('<a/>')
+                    .append($(image))
+                    .on('dragstart', function() { drag(event);})
+                    .prop('src',image.src)
+                    .prop('name', photo.name)
+                    .appendTo(linksContainer);
+   			  }
+   			}
+    	});
+   		 
+   	}
+    }
+          
+           
+          function finishedAlbum(){
+          addPhoto='false';
+          location.reload();
+          }
+          
+          
+    
+    
+          
+         function mouseOver(image) {
+    	if(!addPhoto){
+    	preview.src=image.src ; 
+    	console.log("mouseOver"+image.album);
+    	document.getElementById('albumName').innerHTML="  "+image.title;
+   		document.getElementById("launchAlbum" ).href=image.href;
+   		document.getElementById("picNum" ).innerHTML="  "+image.count;
+   		document.getElementById("created" ).innerHTML="  "+image.created;
+   		document.getElementById("privacy" ).innerHTML="  "+image.privacy;
+   		document.getElementById("comment" ).innerHTML="  "+image.description;
+   		}
+   		
+   } 
+          
+    
+    
+    function drag(image) {
+          console.log(image.target.currentSrc);
+          image.dataTransfer.setData("text", image.target.currentSrc);
+         }
+       
+ 
+ 
+    
+  
+
+    
+    
+ function fbGetFirstPhoto(album,name,count,privacy,create,description,callback) {
+ 		 FB.api('/' + album + '/photos', function(photos) {
+      		if (photos && photos.data && photos.data.length) {
+         	
+         	var linksContainer = $('#firstPhoto');
+          	var photo = photos.data[0]; 
+          	var image = document.createElement('img');
+          	image.src = photo.source;
+			var created = create.split("T",1);
+			
+			console.log(description);
+		if(description=='textAlbum'){
+		
+		console.log("appending img");
+			 $('<a/>')
+                .append($(image))
+                .prop('href',"javascript:myClick("+album+ ")")
+                .on('mouseover', function() { mouseOver(this);})
+                //.on('dragstart', function() { drag(event);})
+                .prop('src',image.src)
+                .prop('album',album)
+                .prop('title', name)
+                .prop('count', count)
+                .prop('created', created)
+                .prop('privacy', privacy)
+                .prop('description', description)
+                .appendTo(linksContainer);
+			 callback("here");
+        }
+      }
+    });
+    };
+
+
+
+    
+    function getAlbumPhotos(){
+        document.getElementById('firstPhoto').style.display='inline'; 
+        FB.api('/me/albums?fields=id,name,count,privacy,created_time,description', function(response) {
+        //console.log(response.data.length);
+        for (var i = 0; i < response.data.length; i++) {
+        var album = response.data[i];                getPhoto=fbGetFirstPhoto(album.id,album.name,album.count,album.privacy,album.created_time,album.description,function(model){
+        console.log(model);
+        //startapp(model);
+   		 }); 
+	}
+
+  });
+    };
+  
+        
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+   window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '334273433411246',
+      xfbml      : true,
+      version    : 'v2.1'
+    });
+    
+
+
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  }, { scope: 'publish_stream, email, user_likes, user_birthday, user_location user_friends user_photos publish_actions' }
+    );
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "http://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+   
+    
+    
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      var accessToken = response.authResponse.accessToken;
+      var text="";
+      var link="";
+      document.cookie="token=response.authResponse.accessToken";
+      FB.api('/me', function(response) {
+      document.getElementById("userName").innerHTML=' '+response.name+' ';
+      });
+      addPhoto=false;
+       getAlbumPhotos();  
+        
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }    
+  
+</script>
+
+
+
+
+
+</html>

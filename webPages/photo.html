@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+ <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="css/bootstrap-image-gallery.css">
+<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="css/local.css" />
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script type="text/javascript" src="js/bootstrap.min.js"></script>   
+
+<title>DriveHype Photo Gallery</title>
+
+
+</head>
+   
+<style type="text/css">
+    
+   div.item active .peopleCarouselImg img {
+  width: auto;
+  height: 225px;
+  max-height: 225px;
+}
+       
+ div.myHidden{
+    
+    
+    display:none;
+    
+}    
+        
+	.thumbnails img {
+		width: 100px;
+		height: 80px;
+		border: 4px solid #555;
+		padding: 1px;
+		margin: 0 10px 10px 0;
+		display:inline-block;
+    	
+	}
+
+	.thumbnails img:hover {
+		border: 4px solid #00ccff;
+		cursor:pointer;
+	}
+ 
+	.preview img {
+		border: 4px solid #444;
+		padding: 1px;
+		margin-top:20px;
+		margin-bottom: 20px;
+		height: 200px;
+	}
+    
+      
+  .btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  background: red;
+  cursor: inherit;
+  display: block;
+}
+input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
+}
+    
+    </style>
+<!-- NAVBAR
+================================================== -->
+         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            
+            <div class="container">
+                
+               <a class="navbar-brand" href="#">DriveHype</a> 
+            
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+           
+            
+            <div  class="collapse navbar-collapse navbar-ex1-collapse">
+                
+                <ul class="nav navbar-nav navbar-left ">
+     
+                    
+                   <span class="file-input btn btn-primary btn-file">
+                Browse&hellip; <input type="file" >
+                    </span>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right ">
+                    <li><a href="index.html">Start Page</a>
+                        <li><a href="albums.html">Albums</a>
+                    <li class="dropdown messages-dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">2</span> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header">2 New Messages</li>
+                            <li class="message-preview">
+                                <a href="#">
+                                    <span class="avatar"><i class="fa fa-bell"></i></span>
+                                    <span class="message">Security alert</span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li class="message-preview">
+                                <a href="#">
+                                    <span class="avatar"><i class="fa fa-bell"></i></span>
+                                    <span class="message">Security alert</span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="#">Go to Inbox <span class="badge">2</span></a></li>
+                        </ul>
+                    </li>
+                     <li class="dropdown user-dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i id="userName" class="fa fa-user"></i> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                            <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+   <!--  Carousel - consult the Twitter Bootstrap docs at 
+      http://twitter.github.com/bootstrap/javascript.html#carousel -->
+<div id="this-carousel-id" class="carousel slide"><!-- class of slide for animation -->
+  <div id='caro' class="carousel-inner myHidden">
+    
+  
+    
+  </div><!-- /.carousel-inner -->
+  <!--  Next and Previous controls below
+        href values must reference the id for this carousel -->
+    <a class="carousel-control left" href="#this-carousel-id" data-slide="prev">&lsaquo;</a>
+    <a class="carousel-control right" href="#this-carousel-id" data-slide="next">&rsaquo;</a>
+</div><!-- /.carousel -->
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+      
+      
+   <div class="container">
+    
+        <div class="row">
+            
+            <div class="col-xs-3">
+               
+                <ul id="sideBar" class="nav navbar-nav side-nav">
+                	
+                    <li><a href="#">Picture Name: </br><i id='albumName' class="glyphicon glyphicon-record"></i> </a></li>
+                    <li><a href="#">Creation Date: </br><i id='created' class="glyphicon glyphicon-calendar"></i> </a></li>
+                     <li><a href="#">Picture ID </br><i id='idName' class="glyphicon glyphicon-link"></i> </a></li>
+                    <div class="preview img-responsive" align="bottom">
+						<img ondrop="dropIt(event);" ondragover="event.preventDefault();" name="preview" src=img/logo.png alt=""                          width=200/>
+						
+					</div>
+
+                        <a id="launchAlbum"  class="btn btn-md btn-warning " href="javascript:myClick()">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        Delete Photo</a>
+                      
+                </ul>
+                
+                
+            </div>
+
+            <div class="col-xs-9" >
+                    <h1>Photo Gallery </h1>
+                
+                        <blockquote>
+                            <p>The photo gallery allows the user to add, delete or view photos.</p>
+                        </blockquote>
+            
+                    <div id="firstPhoto" class="thumbnails img-responsive hidden"></div>
+
+	               
+                        <div class="row">
+                          <p> <button style="text-align: center;" type="button" class="btn btn-success btn-md" onclick="startGallery()">
+                        <i class="glyphicon glyphicon-play"></i>
+                                <span>Start Image Gallery</span>
+        </button>
+            <button style="text-align: center;" type="button" class="btn btn-primary btn-md" onclick="stopGallery()">
+                         <i class="glyphicon glyphicon-stop"></i>
+                                <span>Close Gallery</span>
+            </button></p>
+                        </div>
+                       <br>
+            
+                    </div> 
+
+                </div>
+            </div>
+
+  
+    <form id='formPic' enctype="multipart/form-data">
+            <input type="filename" name="img/logo.png" />
+            <input type="hidden" name="source" value="@img/logo.png"/>
+            <input type="hidden" name="message" value="My Message"/>
+        </form> 
+    
+
+
+      <!-- FOOTER -->
+      <footer>
+          <div class="row">
+                <div class="col-xs-9 pull-right">
+                    <p>&copy; 2014 DriveHype &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+              </div>
+          </div>
+      </footer>
+
+    </div><!-- /.container -->
+
+      
+<script>
+    
+    
+     $(document).on('change', '.btn-file :file', function() {
+        var input = $(this);
+         console.log(input[0].files[0]);
+
+    // Create a reader object
+    var reader = new FileReader();
+    if (input.length) {
+        var textFile = input[0].files[0];
+        // Read the file
+        //reader.readAsText(textFile);
+        
+      
+        // When it's loaded, process it
+      
+    
+    //console.log(file);
+    //if (file && file.length) {
+     
+  var fd = new FormData();
+fd.append("access_token", getCookie('token'));
+fd.append("source", textFile);fd.append("message","NewPhoto");
+        
+try{
+   $.ajax({
+        url:"https://graph.facebook.com/" + getCookie("albumID") + "/photos?access_token=" + getCookie('token'),
+        type:"POST",
+        data:fd,
+        processData:false,
+        contentType:false,
+        cache:false,
+        success:function(data){
+            console.log("success " + data);
+        },
+        error:function(shr,status,data){
+            console.log("error " + data + " Status " + shr.status);
+        },
+        complete:function(){
+            console.log("Ajax Complete");
+        }
+    });
+
+}catch(e){console.log(e);}
+  
+    }
+        
+  });    
+ 
+
+
+
+     
+    
+    
+    
+
+    
+    
+    
+    $(document).ready(function(){
+    $('.carousel').carousel({
+      interval: 2000
+    });
+    });
+    
+    
+    function addClick(){
+        
+        console.log("here onclick");
+       var canvas = "img/logo.png" ;
+var imageData  = canvas.toDataURL("image/png");
+try{
+    blob = dataURItoBlob(imageData);
+}catch(e){console.log(e);}
+var fd = new FormData();
+fd.append("access_token",getCookie("token"));
+fd.append("source", blob);
+fd.append("message","Photo Text");
+try{
+$.ajax({
+    url:"https://graph.facebook.com/me/photos?access_token=" + getCookie("token"),
+    type:"POST",
+    data:fd,
+    processData:false,
+    contentType:false,
+    cache:false,
+    success:function(data){
+        console.log("success " + data);
+    },
+    error:function(shr,status,data){
+        console.log("error " + data + " Status " + shr.status);
+    },
+    complete:function(){
+    console.log("Posted to facebook");
+    }
+});
+
+}catch(e){console.log(e);}
+     
+    }
+    
+    
+    function dataURItoBlob(dataURI) {
+var byteString = atob(dataURI.split(',')[1]);
+var ab = new ArrayBuffer(byteString.length);
+var ia = new Uint8Array(ab);
+for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+}
+return new Blob([ab], { type: 'image/png' });
+}
+    
+    function myClick()
+    {
+        console.log("here onclick");
+       var picID= document.getElementById('idName').innerHTML;
+        FB.api(
+        "/"+picID,
+        "DELETE",
+        function (response) {
+        if (response && !response.error) {
+        alert('Picture is deleted');
+        }
+            else{
+                alert('Error occured '+response.error);
+                console.log(picID);
+                console.log(response.error);
+            }
+        }
+        );
+    }
+    
+    
+    function startGallery(){
+     document.getElementById('caro').style.display='inline';  
+    document.getElementById('sideBar').style.display='none';     
+    }
+         
+          
+          
+          
+     function stopGallery(){ 
+     document.getElementById('caro').style.display='none';  
+    document.getElementById('sideBar').style.display='inline';      
+    }      
+    
+          
+          
+          
+    function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+    }
+    return "";
+}
+    
+    
+    
+      
+         function mouseOver(image) {
+    	
+    	preview.src=image.src ; 
+    	console.log("mouseOver"+image.album);
+    	document.getElementById('albumName').innerHTML="  "+image.title;
+   		document.getElementById("created" ).innerHTML="  "+image.created;
+        document.getElementById("idName" ).innerHTML="  "+image.id;
+   		
+   		//document.getElementById("comment" ).innerHTML="  "+image.description;
+   		
+   		
+   } 
+
+function getPhotos(){
+FB.api('/' + getCookie("albumID") + '/photos', function(photos) {
+      if (photos && photos.data && photos.data.length) {
+        
+          for (var j = 0; j < photos.data.length; j++) {
+          var photo = photos.data[j];
+             
+          // photo.picture contain the link to picture
+        var myItems=document.createElement('div');  
+          var image = document.createElement('img');
+          image.src = photo.source;
+            image.className="peopleCarouselImg";
+            myItems.appendChild(image);
+            if(j==0){
+                myItems.className='item active';
+            }
+            else{
+                myItems.className='item';
+            }
+             
+          document.getElementById('caro').appendChild(myItems);
+         FB.api( "/"+photo.id,function (pic) {
+            if (pic && !pic.error) {
+                var image = document.createElement('img');
+                image.src = pic.source;
+                var linksContainer = $('#firstPhoto');
+                console.log("photo "+pic.name);
+                 $('<a/>')
+                .append($(image))
+                
+                .on('mouseover', function() { mouseOver(this);})
+                //.on('dragstart', function() { drag(event);})
+                .prop('src',image.src)
+                
+                .prop('title', pic.name)
+                .prop('id', pic.id)
+                .prop('created', ((pic.created_time).split("T",1)))
+                
+                //.prop('description', photo.description)
+                .appendTo(linksContainer);
+                
+                
+            }
+        }
+        );
+              
+             
+            
+           
+        }
+      }
+    });
+    }
+    
+    
+    
+ // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+        FB.api('/me', function(response) {
+      document.getElementById("userName").innerHTML=' '+response.name+' ';
+            console.log("responseID"+response.id);
+      });
+       getPhotos();     
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+   window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '334273433411246',
+      xfbml      : true,
+      version    : 'v2.1'
+    });
+    
+
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "http://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+  
+    
+
+
+</script>
+      
+      
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+   
+   
+  </body>
+</html>

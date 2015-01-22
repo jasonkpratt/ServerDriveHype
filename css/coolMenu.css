@@ -1,0 +1,67 @@
+body {
+	margin-top: 50px;
+	font-family: Arial;
+}
+h2 { font-size: 20px; color: #999; padding: .5em 0;}
+h3 { font-size: 14px; }
+
+/* Structure
+------------------------------------------*/
+#coolMenu,
+#coolMenu ul {
+	list-style: none;
+}
+#coolMenu {
+	float: left;
+}
+#coolMenu > li {
+	float: left;
+}
+#coolMenu li a {
+	display: block;
+	height: 2em;
+	line-height: 2em;
+	padding: 0 2.5em;
+	text-decoration: none;
+}
+#coolMenu ul {
+	position: absolute;
+	display: none;
+	z-index: 999;
+}
+#coolMenu ul li a {
+	width: 180px;
+}
+#coolMenu li:hover ul.noJS {
+	display: block; 
+}
+
+
+/* Main menu
+------------------------------------------*/
+#coolMenu {
+	  font-family: Lora,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 15px;
+	
+}
+#coolMenu > li > a {
+	color: #fff;
+	font-weight: bold;
+}
+#coolMenu > li:hover > a {
+	background: #b9b94d;
+	color: #000;
+}
+
+
+/* Submenu
+------------------------------------------*/
+#coolMenu ul {
+	background: #b9b94d;
+}
+#coolMenu ul li a {
+	color: #000;
+}
+#coolMenu ul li:hover a {
+	background: #777760;
+}
