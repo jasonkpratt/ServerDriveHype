@@ -122,16 +122,33 @@
       <div class="panel-heading">
         <h3 class="panel-title">Birthday</h3>
       </div>
-      <div id='birthd' class="panel-body">
-        Panel content
-      </div>
-</div>
+            <div id='birthd' class="panel-body">
+            Panel content
+            </div>
+        </div>
     
 </div>
-    <div class="col-xs-9">
-        <img src="img/car.jpg"></img>
-    </div>
+    
 </row>
+    
+    <div class="col-xs-6">
+        <img src="img/car.jpg"></img>
+    
+    </div>
+    
+    
+    <row> 
+        <div class="col-xs-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">FB Permissions Granted</h3>
+                </div>
+                <div id='permissions' class="panel-body">
+                    
+                </div>
+            </div>
+        </div>
+    </row>
 </body>
 <script>
  // This is called with the results from from FB.getLoginStatus().
@@ -147,18 +164,10 @@
       var accessToken = response.authResponse.accessToken;
       var text="";
       
-      testAPI(accessToken);
-    } else if (response.status === 'not_authorized') {
-      // The person is logged into Facebook, but not your app.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into this app.';
-    } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
-    }
-  }
+      getAccountData(accessToken);
+    } 
+    } 
+  
 
   // This function is called when someone finishes with the Login
   // Button.  See the onlogin handler attached to it in the sample
@@ -178,15 +187,7 @@
     
 
 FB.login(function(){
-console.log('get pictures');
-FB.api(
-    "/me/photos/uploaded",
-    function (response) {
-      if (response && !response.error) {
-        /* handle the result */
-      }
-    }
-);
+
 
 }, { scope: 'publish_stream, email, user_likes, user_birthday, user_location user_friends user_photos publish_actions' });
 
@@ -224,7 +225,7 @@ FB.api(
 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI(accessToken) {
+  function getAccountData(accessToken) {
     console.log('Welcome!  Fetching your information.... ');
     
     FB.api('/me', function(response) {
@@ -237,6 +238,27 @@ FB.api(
        document.getElementById('birthd').innerHTML =response.birthday;
       
     });
+      
+      /* make the API call */
+FB.api(
+    "/me/permissions",
+    function (response) {
+      if (response && !response.error) {
+        /* handle the result */
+          console.log('Successful login for: ' + response.name);
+          for (var i = 0; i < response.data.length; i++) {
+              
+              var permission=response.data[i];
+              console.log('permission responses '+permission.permission);
+              var container = document.createElement('div');
+              container.textContent=permission.permission;
+              document.getElementById('permissions').appendChild(container);
+              
+          }
+          
+      }
+    }
+);
     
  
   }

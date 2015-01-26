@@ -85,6 +85,7 @@ div.hidden{
                 </ul>
                 
                 <ul class="nav navbar-nav navbar-right ">
+                    <li><a href="index.html">Start Page</a>
                     <li class="dropdown messages-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">2</span> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -179,7 +180,7 @@ div.hidden{
             <div class="row">
                 
                 <div class="col-xs-9 pull-right">
-                    <fb:login-button scope= "publish_stream, email, user_likes, user_birthday, user_location user_friends user_photos publish_actions" onlogin="checkLoginState();">
+                    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
                     </fb:login-button>
 
                     <div id="status">
@@ -427,6 +428,7 @@ FB.api(
  		 FB.api('/' + album + '/photos', function(photos) {
       		if (photos && photos.data && photos.data.length) {
          	
+            if(description!='textAlbum'){    
          	var linksContainer = $('#firstPhoto');
           	var photo = photos.data[0]; 
           	var image = document.createElement('img');
@@ -450,6 +452,7 @@ FB.api(
                 .prop('description', description)
                 .appendTo(linksContainer);
 			 callback("here");
+        }
       }
     });
     };

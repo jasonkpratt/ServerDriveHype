@@ -18,7 +18,16 @@
    
 <style type="text/css">
     
-   div.item active .peopleCarouselImg img {
+progress[value] {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+   appearance: none;
+display:none;
+  width: 250px;
+  height: 20px;
+}  
+    
+    div.item active .peopleCarouselImg img {
   width: auto;
   height: 225px;
   max-height: 225px;
@@ -30,6 +39,7 @@
     display:none;
     
 }    
+     
         
 	.thumbnails img {
 		width: 100px;
@@ -100,8 +110,8 @@ input[readonly] {
                 <ul class="nav navbar-nav navbar-left ">
      
                     
-                   <span class="file-input btn btn-primary btn-file">
-                Browse&hellip; <input type="file" >
+                   <span class="file-input btn btn-success btn-file">
+                Add Photo<input type="file" >
                     </span>
                 </ul>
                 
@@ -190,7 +200,11 @@ input[readonly] {
                 
             </div>
 
+          
+
             <div class="col-xs-9" >
+                <progress id="progress2" max="100" value="0"></progress>
+                <br>
                     <h1>Photo Gallery </h1>
                 
                         <blockquote>
@@ -209,20 +223,19 @@ input[readonly] {
                          <i class="glyphicon glyphicon-stop"></i>
                                 <span>Close Gallery</span>
             </button></p>
+                            <br>
+                            
                         </div>
                        <br>
             
+                 
                     </div> 
 
                 </div>
             </div>
 
-  
-    <form id='formPic' enctype="multipart/form-data">
-            <input type="filename" name="img/logo.png" />
-            <input type="hidden" name="source" value="@img/logo.png"/>
-            <input type="hidden" name="message" value="My Message"/>
-        </form> 
+           
+   
     
 
 
@@ -240,29 +253,26 @@ input[readonly] {
       
 <script>
     
-    
+    //add photo
      $(document).on('change', '.btn-file :file', function() {
         var input = $(this);
          console.log(input[0].files[0]);
-
+         document.getElementById('progress2').style.display='block'; 
     // Create a reader object
     var reader = new FileReader();
     if (input.length) {
         var textFile = input[0].files[0];
-        // Read the file
-        //reader.readAsText(textFile);
-        
-      
-        // When it's loaded, process it
-      
-    
-    //console.log(file);
-    //if (file && file.length) {
-     
-  var fd = new FormData();
-fd.append("access_token", getCookie('token'));
-fd.append("source", textFile);fd.append("message","NewPhoto");
-        
+    var fd = new FormData();
+    fd.append("access_token", getCookie('token'));
+    fd.append("source", textFile);fd.append("message","NewPhoto");
+     var counter = 0;
+(function asyncLoop() {
+
+    $('#progress2').val(counter++);
+    if (counter <= 95) {
+        setTimeout(asyncLoop, 150);
+    }
+})();  
 try{
    $.ajax({
         url:"https://graph.facebook.com/" + getCookie("albumID") + "/photos?access_token=" + getCookie('token'),
@@ -273,31 +283,29 @@ try{
         cache:false,
         success:function(data){
             console.log("success " + data);
+            $('#progress2').val(100);
+            alert('Picture is added');
         },
         error:function(shr,status,data){
             console.log("error " + data + " Status " + shr.status);
+            alert('Error uploading, try again');
         },
         complete:function(){
+            
+            resetPage();
             console.log("Ajax Complete");
+            
         }
+       
     });
 
 }catch(e){console.log(e);}
   
     }
-        
+      
   });    
  
-
-
-
-     
-    
-    
-    
-
-    
-    
+   
     
     $(document).ready(function(){
     $('.carousel').carousel({
@@ -305,52 +313,10 @@ try{
     });
     });
     
-    
-    function addClick(){
-        
-        console.log("here onclick");
-       var canvas = "img/logo.png" ;
-var imageData  = canvas.toDataURL("image/png");
-try{
-    blob = dataURItoBlob(imageData);
-}catch(e){console.log(e);}
-var fd = new FormData();
-fd.append("access_token",getCookie("token"));
-fd.append("source", blob);
-fd.append("message","Photo Text");
-try{
-$.ajax({
-    url:"https://graph.facebook.com/me/photos?access_token=" + getCookie("token"),
-    type:"POST",
-    data:fd,
-    processData:false,
-    contentType:false,
-    cache:false,
-    success:function(data){
-        console.log("success " + data);
-    },
-    error:function(shr,status,data){
-        console.log("error " + data + " Status " + shr.status);
-    },
-    complete:function(){
-    console.log("Posted to facebook");
+    function resetPage(){
+        location.reload();  
     }
-});
-
-}catch(e){console.log(e);}
-     
-    }
-    
-    
-    function dataURItoBlob(dataURI) {
-var byteString = atob(dataURI.split(',')[1]);
-var ab = new ArrayBuffer(byteString.length);
-var ia = new Uint8Array(ab);
-for (var i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
-}
-return new Blob([ab], { type: 'image/png' });
-}
+   
     
     function myClick()
     {
@@ -364,7 +330,7 @@ return new Blob([ab], { type: 'image/png' });
         alert('Picture is deleted');
         }
             else{
-                alert('Error occured '+response.error);
+                alert('Will not be able to delete from FB albums, will be a mySQL function');
                 console.log(picID);
                 console.log(response.error);
             }
@@ -409,10 +375,7 @@ return new Blob([ab], { type: 'image/png' });
     	console.log("mouseOver"+image.album);
     	document.getElementById('albumName').innerHTML="  "+image.title;
    		document.getElementById("created" ).innerHTML="  "+image.created;
-        document.getElementById("idName" ).innerHTML="  "+image.id;
-   		
-   		//document.getElementById("comment" ).innerHTML="  "+image.description;
-   		
+        document.getElementById("idName" ).innerHTML="  "+image.id;	
    		
    } 
 

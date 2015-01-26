@@ -85,6 +85,7 @@ div.hidden{
                 </ul>
                 
                 <ul class="nav navbar-nav navbar-right ">
+                    <li><a href="index.html">Start Page</a>
                     <li class="dropdown messages-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">2</span> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -271,7 +272,7 @@ preview.src=theData;
         if (!response || response.error) {
             alert('Error occured');
         } else {
-            alert('Posted the picture to album!');
+            alert('Posted text to album!');
             var newCount=document.getElementById("picNum" ).innerHTML;
             
             console.log(newCount);
@@ -539,7 +540,7 @@ FB.api(
       var accessToken = response.authResponse.accessToken;
       var text="";
       var link="";
-      document.cookie="token=response.authResponse.accessToken";
+     document.cookie="token="+response.authResponse.accessToken;
       FB.api('/me', function(response) {
       document.getElementById("userName").innerHTML=' '+response.name+' ';
       });

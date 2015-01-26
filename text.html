@@ -18,7 +18,16 @@
    
 <style type="text/css">
     
-   div.item active .peopleCarouselImg img {
+progress[value] {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+   appearance: none;
+display:none;
+  width: 250px;
+  height: 20px;
+}  
+    
+    div.item active .peopleCarouselImg img {
   width: auto;
   height: 225px;
   max-height: 225px;
@@ -30,6 +39,7 @@
     display:none;
     
 }    
+     
         
 	.thumbnails img {
 		width: 100px;
@@ -54,6 +64,30 @@
 		height: 200px;
 	}
     
+      
+  .btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  background: red;
+  cursor: inherit;
+  display: block;
+}
+input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
+}
+    
     </style>
 <!-- NAVBAR
 ================================================== -->
@@ -76,12 +110,14 @@
                 <ul class="nav navbar-nav navbar-left ">
      
                     
-                    <a href="javascript:myClick()" class="btn btn-md btn-success"><i class="fa fa-table">                </i > Add Text</br></a>
+                   <span class="file-input btn btn-success btn-file">
+                Add Text<input type="file" >
+                    </span>
                 </ul>
                 
                 <ul class="nav navbar-nav navbar-right ">
                     <li><a href="index.html">Start Page</a>
-                        <li><a href="albums.html">Text Albums</a>
+                        <li><a href="textAlbums.html">Text Albums</a>
                     <li class="dropdown messages-dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">2</span> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -147,24 +183,28 @@
                
                 <ul id="sideBar" class="nav navbar-nav side-nav">
                 	
-                    <li><a href="#">Text Name: </br><i id='albumName' class="glyphicon glyphicon-record"></i> </a></li>
+                    <li><a href="#">Picture Name: </br><i id='albumName' class="glyphicon glyphicon-record"></i> </a></li>
                     <li><a href="#">Creation Date: </br><i id='created' class="glyphicon glyphicon-calendar"></i> </a></li>
-                     <li><a href="#">Text ID </br><i id='idName' class="glyphicon glyphicon-link"></i> </a></li>
+                     <li><a href="#">Picture ID </br><i id='idName' class="glyphicon glyphicon-link"></i> </a></li>
                     <div class="preview img-responsive" align="bottom">
 						<img ondrop="dropIt(event);" ondragover="event.preventDefault();" name="preview" src=img/logo.png alt=""                          width=200/>
 						
 					</div>
 
-                        <a id="launchAlbum"  class="btn btn-md btn-warning " href="#">
+                        <a id="launchAlbum"  class="btn btn-md btn-warning " href="javascript:myClick()">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        Delete Text</a>
+                        Delete Photo</a>
                       
                 </ul>
                 
                 
             </div>
 
+          
+
             <div class="col-xs-9" >
+                <progress id="progress2" max="100" value="0"></progress>
+                <br>
                     <h1>Text Gallery </h1>
                 
                         <blockquote>
@@ -177,22 +217,25 @@
                         <div class="row">
                           <p> <button style="text-align: center;" type="button" class="btn btn-success btn-md" onclick="startGallery()">
                         <i class="glyphicon glyphicon-play"></i>
-                                <span>Start Text Gallery</span>
+                                <span>Start Gallery</span>
         </button>
             <button style="text-align: center;" type="button" class="btn btn-primary btn-md" onclick="stopGallery()">
                          <i class="glyphicon glyphicon-stop"></i>
                                 <span>Close Gallery</span>
             </button></p>
+                            <br>
+                            
                         </div>
                        <br>
             
+                 
                     </div> 
 
                 </div>
             </div>
 
-  
-    
+           
+   
     
 
 
@@ -210,6 +253,59 @@
       
 <script>
     
+    //add photo
+     $(document).on('change', '.btn-file :file', function() {
+        var input = $(this);
+         console.log(input[0].files[0]);
+         document.getElementById('progress2').style.display='block'; 
+    // Create a reader object
+    var reader = new FileReader();
+    if (input.length) {
+        var textFile = input[0].files[0];
+    var fd = new FormData();
+    fd.append("access_token", getCookie('token'));
+    fd.append("source", textFile);fd.append("message","NewPhoto");
+     var counter = 0;
+(function asyncLoop() {
+
+    $('#progress2').val(counter++);
+    if (counter <= 95) {
+        setTimeout(asyncLoop, 150);
+    }
+})();  
+try{
+   $.ajax({
+        url:"https://graph.facebook.com/" + getCookie("albumID") + "/photos?access_token=" + getCookie('token'),
+        type:"POST",
+        data:fd,
+        processData:false,
+        contentType:false,
+        cache:false,
+        success:function(data){
+            console.log("success " + data);
+            $('#progress2').val(100);
+            alert('Picture is added');
+        },
+        error:function(shr,status,data){
+            console.log("error " + data + " Status " + shr.status);
+            alert('Error uploading, try again');
+        },
+        complete:function(){
+            
+            resetPage();
+            console.log("Ajax Complete");
+            
+        }
+       
+    });
+
+}catch(e){console.log(e);}
+  
+    }
+      
+  });    
+ 
+   
     
     $(document).ready(function(){
     $('.carousel').carousel({
@@ -217,6 +313,10 @@
     });
     });
     
+    function resetPage(){
+        location.reload();  
+    }
+   
     
     function myClick()
     {
@@ -230,7 +330,7 @@
         alert('Picture is deleted');
         }
             else{
-                alert('Error occured '+response.error);
+                alert('Will not be able to delete from FB albums, will be a mySQL function');
                 console.log(picID);
                 console.log(response.error);
             }
@@ -275,10 +375,7 @@
     	console.log("mouseOver"+image.album);
     	document.getElementById('albumName').innerHTML="  "+image.title;
    		document.getElementById("created" ).innerHTML="  "+image.created;
-             document.getElementById("idName" ).innerHTML="  "+image.id;
-   		
-   		//document.getElementById("comment" ).innerHTML="  "+image.description;
-   		
+        document.getElementById("idName" ).innerHTML="  "+image.id;	
    		
    } 
 
@@ -308,7 +405,7 @@ FB.api('/' + getCookie("albumID") + '/photos', function(photos) {
                 var image = document.createElement('img');
                 image.src = pic.source;
                 var linksContainer = $('#firstPhoto');
-                console.log("photo "+pic.name);
+                
                  $('<a/>')
                 .append($(image))
                 
@@ -350,6 +447,7 @@ FB.api('/' + getCookie("albumID") + '/photos', function(photos) {
       // Logged into your app and Facebook.
         FB.api('/me', function(response) {
       document.getElementById("userName").innerHTML=' '+response.name+' ';
+            console.log("responseID"+response.id);
       });
        getPhotos();     
     } else if (response.status === 'not_authorized') {
